@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Coach — Learn to Talk to AI</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#171e2e; --panel2:#1e2740; --ink:#eaf0ff; --dim:#9aa7c7;
+    --line:#2a3450; --accent:#5b8cff; --accent2:#39d3a5; --warn:#ffcf6b; --bad:#ff7a7a;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#0d111b,#0f1420);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:820px;margin:0 auto;padding:24px 18px 80px;}
+  header h1{font-size:26px;margin:0 0 4px;letter-spacing:.2px}
+  header p{color:var(--dim);margin:0 0 18px}
+  .progress{height:6px;background:var(--panel2);border-radius:999px;overflow:hidden;margin:14px 0 22px}
+  .progress > i{display:block;height:100%;width:20%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s}
+  nav.steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+  nav.steps button{flex:1;min-width:120px;background:var(--panel);color:var(--dim);border:1px solid var(--line);
+    padding:8px 10px;border-radius:10px;cursor:pointer;font-size:13px;transition:.2s}
+  nav.steps button.active{color:#fff;border-color:var(--accent);background:var(--panel2)}
+  nav.steps button:hover{color:#fff}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:16px}
+  h2{font-size:21px;margin:0 0 10px}
+  h3{font-size:16px;margin:18px 0 6px;color:#cfe0ff}
+  p.lead{color:var(--dim)}
+  .habit{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+  .habit:first-of-type{border-top:none}
+  .num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--panel2);border:1px solid var(--accent);
+    color:var(--accent);display:grid;place-items:center;font-weight:700}
+  .ba{display:grid;grid-template-columns:1fr;gap:8px;margin:8px 0 4px}
+  .before,.after{border-radius:10px;padding:10px 12px;font-size:14px;border:1px solid var(--line)}
+  .before{background:#221722;border-color:#3d2733}
+  .after{background:#132420;border-color:#204a3c}
+  .tag{font-size:11px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;display:block;margin-bottom:3px}
+  .before .tag{color:var(--bad)} .after .tag{color:var(--accent2)}
+  .move{border-top:1px solid var(--line);padding:16px 0}
+  .move:first-of-type{border-top:none}
+  .move .mh{display:flex;align-items:center;gap:10px}
+  .chip{font-size:12px;background:var(--panel2);border:1px solid var(--line);color:var(--dim);padding:2px 8px;border-radius:999px}
+  code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .drill{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+  .drill .q{font-weight:600;margin-bottom:4px}
+  .drill .ctx{color:var(--dim);font-size:14px;margin-bottom:10px}
+  .opts{display:grid;gap:8px}
+  .opts button{text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    padding:10px 12px;border-radius:10px;cursor:pointer;transition:.15s;font-size:14px}
+  .opts button:hover{border-color:var(--accent)}
+  .opts button.correct{border-color:var(--accent2);background:#132420}
+  .opts button.wrong{border-color:var(--bad);background:#221722}
+  .fb{margin-top:10px;font-size:14px;padding:10px 12px;border-radius:10px;display:none}
+  .fb.show{display:block}
+  .fb.good{background:#132420;border:1px solid #204a3c}
+  .fb.bad{background:#241a22;border:1px solid #3d2733}
+  .rw textarea{width:100%;min-height:84px;background:#0c1018;border:1px solid var(--line);border-radius:10px;
+    color:var(--ink);padding:10px 12px;font-family:inherit;font-size:14px;line-height:1.5;resize:vertical;margin-top:10px}
+  .rw textarea:focus{outline:none;border-color:var(--accent)}
+  .score{color:var(--dim);font-size:14px;margin-top:6px}
+  .coachbox{position:relative}
+  pre.sys{white-space:pre-wrap;background:#0c1018;border:1px solid var(--line);border-radius:12px;
+    padding:16px;font-size:12.5px;max-height:340px;overflow:auto;color:#cfe0ff}
+  .btn{background:var(--accent);color:#fff;border:none;padding:10px 16px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .navbtns{display:flex;justify-content:space-between;margin-top:8px}
+  .hidden{display:none}
+  .callout{border-left:3px solid var(--accent);background:var(--panel2);padding:10px 14px;border-radius:0 10px 10px 0;color:var(--dim);font-size:14px;margin:12px 0}
+  footer{color:var(--dim);font-size:12px;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Prompt Coach</h1>
+    <p>Learn to talk to AI so it actually helps you. No experience needed.</p>
+  </header>
+  <div class="progress"><i id="bar"></i></div>
+  <nav class="steps" id="nav"></nav>
+
+  <!-- STEP 1 -->
+  <section class="card step" data-step="0">
+    <h2>Start here</h2>
+    <p class="lead">AI is not magic and it can't read your mind. It's more like a brilliant new coworker who knows a lot but knows <em>nothing about you or your situation</em> until you tell them. Prompting is just the skill of telling them well.</p>
+    <p>Here's the encouraging part: this is <strong>learnable</strong>, and it's not tricks. People who got good at it all climbed the same short ladder — three habits that build on each other. That's the whole game, and you'll have all three by the end of this page.</p>
+    <div class="callout">The person whose real conversations this is built from started 15 months ago asking an AI "how do I open a fresh spreadsheet." The distance from there to here is just reps on three habits. You can walk the same path.</div>
+    <div class="navbtns"><span></span><button class="btn" onclick="go(1)">The 3 habits →</button></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="card step hidden" data-step="1">
+    <h2>The 3 habits (the whole game)</h2>
+    <p class="lead">Everything else is a version of one of these. Learn them in order.</p>
+    <div class="habit"><div class="num">1</div><div>
+      <h3 style="margin-top:0">Give the givens</h3>
+      <p>The AI can only work with what you hand it. Front-load your real situation — the facts, numbers, and constraints — <em>before</em> you ask.</p>
+      <div class="ba">
+        <div class="before"><span class="tag">Weak</span>Write me a job ad.</div>
+        <div class="after"><span class="tag">Strong</span>Write a job ad for a landscaping crew member. Pay $19/hr, full-time Mon–Sat. Must lift 50 lbs and have reliable transport. Tone: straight-talking.</div>
+      </div>
+    </div></div>
+    <div class="habit"><div class="num">2</div><div>
+      <h3 style="margin-top:0">Ask for a shape</h3>
+      <p>Tell it what form the answer should take, or you'll get a shapeless blob. Steps? A table? Three options? One yes/no?</p>
+      <div class="ba">
+        <div class="before"><span class="tag">Weak</span>Help me plan an offsite.</div>
+        <div class="after"><span class="tag">Strong</span>Plan a 1-day offsite for 12 people. Give me back: 3 theme options, a sample hour-by-hour schedule, and a rough budget.</div>
+      </div>
+    </div></div>
+    <div class="habit"><div class="num">3</div><div>
+      <h3 style="margin-top:0">Don't trust the first answer</h3>
+      <p>The first reply is a draft, not gospel. Make it show its reasoning, argue the other side, or hand you options to choose from.</p>
+      <div class="ba">
+        <div class="before"><span class="tag">Weak</span>Thanks, I'll use that. <span style="color:var(--dim)">(to a generic answer)</span></div>
+        <div class="after"><span class="tag">Strong</span>That's too generic. Ask me 3 questions, then give me 3 stronger versions to choose from.</div>
+      </div>
+    </div></div>
+    <div class="navbtns"><button class="btn ghost" onclick="go(0)">← Back</button><button class="btn" onclick="go(2)">The 7 moves →</button></div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="card step hidden" data-step="2">
+    <h2>The 7 moves</h2>
+    <p class="lead">These are the three habits, broken into specific things you can actually type. You don't need all seven at once — reach for whichever fits.</p>
+    <div id="moves"></div>
+    <div class="navbtns"><button class="btn ghost" onclick="go(1)">← Back</button><button class="btn" onclick="go(3)">Practice →</button></div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="card step hidden" data-step="3">
+    <h2>Practice</h2>
+    <p class="lead"><strong>Part 1 — Spot it.</strong> Read each situation and pick what the prompt needs <em>most</em>. You'll get instant feedback. There's often a defensible second choice — we're after the strongest one.</p>
+    <div id="drills"></div>
+    <div class="score" id="score"></div>
+    <h3 style="margin-top:26px">Part 2 — Write it</h3>
+    <p class="lead" style="margin-top:0">Spotting the fix is half the skill; typing it is the other half. Rewrite each weak prompt yourself, then reveal a strong version and compare. There's no single right answer — check yours against the checklist.</p>
+    <div id="rewrites"></div>
+    <div class="navbtns"><button class="btn ghost" onclick="go(2)">← Back</button><button class="btn" onclick="go(4)">Your live coach →</button></div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="card step hidden" data-step="4">
+    <h2>Your live coach (works in any AI)</h2>
+    <p class="lead">Reading is one thing; reps are another. Copy the text below and paste it as the <strong>first message</strong> into any AI chat — ChatGPT, Claude, Gemini, Copilot. It turns that AI into a coach that watches how you ask and levels you up one step at a time.</p>
+    <div class="coachbox">
+      <pre class="sys" id="sys"></pre>
+      <div class="row">
+        <button class="btn" onclick="copySys()">Copy the coach</button>
+        <span id="copied" style="color:var(--accent2);font-size:13px;display:none">Copied ✓</span>
+      </div>
+    </div>
+    <div class="callout"><strong style="color:var(--ink)">Your first rep, right now:</strong> pick one thing you actually need this week — a message, a plan, a decision. Paste the coach, then ask for that thing using habit 1 (your real givens) and habit 2 (the shape you want back). Nothing else. That one rep on real work is worth more than re-reading this page.</div>
+    <h3>Quick self-check: what kind of asker are you?</h3>
+    <p class="lead" style="margin-top:0">Not a test — just noticing your default helps you catch it. Most beginners lean one way:</p>
+    <ul style="color:var(--dim);font-size:14px">
+      <li><strong style="color:var(--ink)">The Blurter</strong> — fast, terse asks. Your fix: <em>give the givens</em>.</li>
+      <li><strong style="color:var(--ink)">The Rambler</strong> — lots of story, buried ask. Your fix: <em>ask for a shape</em>.</li>
+      <li><strong style="color:var(--ink)">The Freezer</strong> — the task feels too big to start. Your fix: <em>chunk it to step one</em>.</li>
+      <li><strong style="color:var(--ink)">The Accepter</strong> — you take the first answer. Your fix: <em>don't trust the first answer</em>.</li>
+    </ul>
+    <div class="navbtns"><button class="btn ghost" onclick="go(3)">← Back</button><button class="btn" onclick="go(0)">Start over</button></div>
+  </section>
+
+  <footer>Prompt Coach · a learning tool · built from 15 months of real AI conversations</footer>
+</div>
+
+<script>
+const STEPS=["Start","3 Habits","7 Moves","Practice","Live Coach"];
+const nav=document.getElementById('nav');
+STEPS.forEach((s,i)=>{const b=document.createElement('button');b.textContent=(i+1)+". "+s;b.onclick=()=>go(i);nav.appendChild(b);});
+function go(n){
+  document.querySelectorAll('.step').forEach(el=>el.classList.toggle('hidden',+el.dataset.step!==n));
+  [...nav.children].forEach((b,i)=>b.classList.toggle('active',i===n));
+  document.getElementById('bar').style.width=((n+1)/STEPS.length*100)+"%";
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+const MOVES=[
+  ["Anchor to the givens","Habit 1","Hand over your real facts and constraints before the question.",
+   "Give me ideas for my small business.","I run a 2-person coffee cart near a college. Give me 5 cheap ways to get more morning regulars."],
+  ["Chunk it (go slow to go fast)","Habit 1","Big asks fail quietly. Get one checkable piece first.",
+   "Build me a full budget spreadsheet.","First just list the 8–10 expense categories a household budget needs. No spreadsheet yet."],
+  ["Specify the output shape","Habit 2","Say exactly what form to hand back.",
+   "Summarize this report.","Summarize this report as 5 bullet points, then one sentence a busy boss would read."],
+  ["Set the register and depth","Habit 2","Tell it how expert to be and how much detail you want.",
+   "Explain APIs.","Explain APIs like I'm totally new — plain English, one everyday analogy, no jargon."],
+  ["Demand the un-flattering version","Habit 3","AI defaults to agreement and praise. Explicitly forbid it.",
+   "Is this plan good?","Poke holes in this plan. What would make it fail, and what am I not seeing?"],
+  ["Ask for the reasoning","Habit 3","Make the logic visible so you can catch where it's wrong.",
+   "Which laptop should I buy?","Recommend a laptop and walk me through why, so I can check your logic against my needs."],
+  ["Steer, don't restart","Habit 3","When it's off, correct the one wrong turn and keep the thread — don't wipe and re-ask.",
+   "(start a whole new chat)","No — keep everything, but make the tone friendlier and cut the last paragraph."]
+];
+const mv=document.getElementById('moves');
+MOVES.forEach((m,i)=>{
+  const d=document.createElement('div');d.className='move';
+  d.innerHTML=`<div class="mh"><div class="num">${i+1}</div><strong>${m[0]}</strong><span class="chip">${m[1]}</span></div>
+  <p style="margin:8px 0 6px;color:var(--dim)">${m[2]}</p>
+  <div class="ba"><div class="before"><span class="tag">Weak</span>${m[3]}</div>
+  <div class="after"><span class="tag">Strong</span>${m[4]}</div></div>`;
+  mv.appendChild(d);
+});
+
+const DRILLS=[
+  {q:'"write me a resume."',ctx:"Someone types this and hits enter.",
+   opts:["Give the givens (their real experience)","Ask for a shape","Don't trust the first answer","Ask for the reasoning"],
+   correct:0,fb:"The AI knows nothing about this person's jobs, skills, or target role — it can only invent a hollow template. It needs the givens first."},
+  {q:'"I need to write a whole marketing plan and I don\'t even know where to start, it\'s a lot."',ctx:"A beginner, clearly overwhelmed.",
+   opts:["Give the givens","Chunk it to step one","Ask for a shape","Set the register"],
+   correct:1,fb:"The signal here is overwhelm — 'it's a lot,' 'don't know where to start.' Piling on more instructions adds load. Shrink it: 'What are the 3 sections a simple marketing plan needs?' Start there."},
+  {q:'The AI gave a vague answer and the person says: "ok great, I\'ll just use that."',ctx:"The answer was generic and could apply to anyone.",
+   opts:["Give the givens","Ask for a shape","Don't trust the first answer","Chunk it"],
+   correct:2,fb:"Classic over-trust. The move: 'That's too generic — ask me a few questions, then give me 3 versions to choose from.' Getting to choose beats accepting whatever came out."},
+  {q:'"Hi!! So our team just had the wildest quarter and everyone\'s exhausted and I love these people and I want to do something fun... anyway can you help me??"',ctx:"Warm, lots of story, but what do they actually want back?",
+   opts:["Don't trust the first answer","Ask for a shape (what to hand back)","Ask for the reasoning","Chunk it"],
+   correct:1,fb:"There's plenty of warmth but no defined ask. Name the deliverable: 'Give me back 3 offsite ideas, each with a schedule and rough cost.' Shape turns rambling into a plan."},
+  {q:'"Is my essay good?"',ctx:"They want real feedback, not a pat on the head.",
+   opts:["Demand the un-flattering version","Give the givens","Chunk it","Set the register"],
+   correct:0,fb:"AI tends to reassure. Force honesty: 'Be a tough editor — give me the 3 weakest parts of this essay and why.' You learn more from the holes than the praise."}
+];
+let answered=0,right=0;
+const dc=document.getElementById('drills');
+DRILLS.forEach((d,i)=>{
+  const el=document.createElement('div');el.className='drill';
+  el.innerHTML=`<div class="q">${d.q}</div><div class="ctx">${d.ctx}</div><div class="opts"></div><div class="fb" id="fb${i}"></div>`;
+  const o=el.querySelector('.opts');
+  d.opts.forEach((t,j)=>{
+    const b=document.createElement('button');b.textContent=t;
+    b.onclick=()=>{
+      if(el.dataset.done)return;el.dataset.done=1;answered++;
+      const fb=document.getElementById('fb'+i);
+      if(j===d.correct){b.classList.add('correct');right++;fb.className='fb good show';fb.textContent="✓ "+d.fb;}
+      else{b.classList.add('wrong');o.children[d.correct].classList.add('correct');fb.className='fb bad show';fb.textContent="Closest is highlighted. "+d.fb;}
+      document.getElementById('score').textContent=`Score: ${right} / ${answered} answered`;
+    };
+    o.appendChild(b);
+  });
+  dc.appendChild(el);
+});
+
+const REWRITES=[
+  {task:"Rewrite this so the AI can actually help:",
+   weak:"Write a text asking to swap shifts.",
+   strong:"Write a short, friendly text to my coworker Jess asking to swap my Saturday morning shift for her Tuesday evening one — my son has a tournament. Under 40 words, casual, not desperate.",
+   check:"Did yours include the real givens (who, which shifts, why)? And a shape (length, tone)?"},
+  {task:"The AI just answered a vague question with 5 generic bullets, and the person is about to type \"thanks, that works.\" Write the push-back instead:",
+   weak:"thanks, that works",
+   strong:"That's too generic. Ask me 3 questions about my situation first, then give me 3 different versions to choose from.",
+   check:"Did yours refuse the first draft, and either make the AI come to YOU for the missing info or hand you options to choose from?"}
+];
+const rc=document.getElementById('rewrites');
+REWRITES.forEach((r)=>{
+  const el=document.createElement('div');el.className='drill rw';
+  el.innerHTML=`<div class="q">${r.task}</div>
+  <div class="before"><span class="tag">Weak</span>${r.weak}</div>
+  <textarea placeholder="Type your stronger version here…"></textarea>
+  <div class="row"><button class="btn ghost">Show a strong version</button></div>
+  <div class="reveal hidden"><div class="after" style="margin-top:10px"><span class="tag">One strong version</span>${r.strong}</div>
+  <div class="fb good show" style="margin-top:8px">Check yours: ${r.check}</div></div>`;
+  el.querySelector('button').onclick=()=>el.querySelector('.reveal').classList.remove('hidden');
+  rc.appendChild(el);
+});
+
+const SYS=`You are Prompt Coach. Your job is to make me a better prompter — not to do my task for me. Coach me by watching HOW I ask (and how I react) and nudging me one step better each turn. Be warm, concrete, and short. Never condescending — assume I'm smart and new, not slow.
+
+WHAT GOOD PROMPTING IS (everything ladders up to these 3 habits):
+ 1. Give the givens (my real situation, facts, constraints).
+ 2. Ask for a specific shape of answer (steps? a table? one yes/no? 3 options?).
+ 3. Don't trust the first answer (make it show its work, argue the other side, or give me options).
+
+EACH TURN, read two things: (A) what I asked and how, and (B) how I reacted to your last answer (turn 2+). Reactions are where the deepest habits hide. Then pick the SINGLE weakest link, in this priority order (top wins):
+
+ 1. OVERWHELM / FEAR — I sound stuck or afraid, not just busy: "don't know where to start," "worried," "don't want to mess it up," "not sure I'll catch it," or I keep circling a task without starting it. Volume alone ("I have a lot going on") is NOT fear — look for the emotion or the inability to start.
+    -> Shrink it to a checkable step one AND tell me how to verify that one step. Do NOT ask me for more context first — that adds load. Lower the stakes before anything else.
+
+ 2. OVER-TRUST — I accepted an answer to a prompt that had known gaps. Judge my INPUT, not your output: if my prompt was missing context or shape, your answer was generic by construction — so if I reply "thanks, that works" and move on without pushing back, this fires.
+    -> Teach me to not take the first answer: ask for 2-3 options, make you question me first, or ask "what's weak about this?" Getting to choose beats accepting whatever came out.
+
+ 3. NO CONTEXT — you can't see my actual situation.
+    -> Tell me to give the givens; show my prompt rewritten with the key facts added.
+
+ 4. NO SHAPE — I didn't say what form I want back.
+    -> Tell me to ask for a shape; add a "give me back: ..." line.
+
+ 5. NO REASONING — I want an answer with no way to check it.
+    -> Tell me to ask for your reasoning so I can check the logic.
+
+HOW YOU REPLY EVERY TURN:
+ - Fix ONLY that one link. One move per turn — never dump the whole list.
+ - Credit what I already did well (especially good instincts, even messy ones).
+ - Show a rewritten version of MY prompt with the one improvement, say in ONE plain sentence why it's better, and end with the improved prompt I can copy and send.
+ - When I land a move, NAME it: "That's the 'ask for a shape' move — you've got it," then you may introduce the next.
+
+GRADUATION:
+ - When I've done all three habits unprompted across 2-3 turns, say so plainly, stop coaching, and just work with me normally. Offer a tip only if I ask, or if an old habit slips back.
+
+HARD RULES:
+ - If I just want the answer and not coaching, give it — then offer one small tip on how I could have asked better.
+ - Never make me feel dumb. No jargon without a plain-word gloss.
+ - Keep replies short. A wall of text is a failed coaching turn.`;
+document.getElementById('sys').textContent=SYS;
+function copySys(){
+  navigator.clipboard.writeText(SYS).then(()=>{
+    const c=document.getElementById('copied');c.style.display='inline';setTimeout(()=>c.style.display='none',1800);
+  }).catch(()=>{
+    const r=document.createRange();r.selectNode(document.getElementById('sys'));
+    window.getSelection().removeAllRanges();window.getSelection().addRange(r);
+    try{document.execCommand('copy');}catch(e){}
+    const c=document.getElementById('copied');c.style.display='inline';setTimeout(()=>c.style.display='none',1800);
+  });
+}
+go(0);
+</script>
+</body>
+</html>
