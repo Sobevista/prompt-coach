@@ -85,5 +85,52 @@ assert.match(trainer, /aria-live="polite"/);
 assert.match(trainer, /aria-current/);
 assert.match(trainer, /:focus-visible/);
 assert.match(trainer, /prefers-reduced-motion/);
+assert.match(trainer, /id="rewrite-task-\$\{i\}"/);
+assert.match(trainer, /<textarea aria-labelledby="rewrite-task-\$\{i\}"/);
+
+const extractFunction = (source, signature) => {
+  const start = source.indexOf(signature);
+  assert.notEqual(start, -1, `${signature} must exist`);
+  const braceStart = source.indexOf('{', start);
+  let depth = 0;
+  for (let index = braceStart; index < source.length; index += 1) {
+    if (source[index] === '{') depth += 1;
+    if (source[index] === '}') depth -= 1;
+    if (depth === 0) return source.slice(start, index + 1);
+  }
+  assert.fail(`${signature} must have balanced braces`);
+};
+
+const copyHelper = extractFunction(trainerScript, 'async function tryCopyText');
+const copyContext = {};
+vm.runInNewContext(`${copyHelper}; this.tryCopyText = tryCopyText;`, copyContext);
+
+let fallbackCalls = 0;
+assert.equal(
+  await copyContext.tryCopyText('coach', undefined, () => { fallbackCalls += 1; return true; }),
+  true,
+  'missing Clipboard API must use the fallback without throwing',
+);
+assert.equal(fallbackCalls, 1);
+
+assert.equal(
+  await copyContext.tryCopyText(
+    'coach',
+    { writeText: async () => { throw new Error('denied'); } },
+    () => true,
+  ),
+  true,
+  'a rejected Clipboard write must use a successful fallback',
+);
+assert.equal(
+  await copyContext.tryCopyText(
+    'coach',
+    { writeText: async () => { throw new Error('denied'); } },
+    () => false,
+  ),
+  false,
+  'copy must report failure when both paths fail',
+);
+assert.match(trainer, /Copy failed[^<]*select the coach text/i);
 
 console.log('Prompt Coach release checks passed.');

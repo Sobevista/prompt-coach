@@ -266,11 +266,11 @@ const REWRITES=[
    check:"Did yours refuse the first draft, and either make the AI come to YOU for the missing info or hand you options to choose from?"}
 ];
 const rc=document.getElementById('rewrites');
-REWRITES.forEach((r)=>{
+REWRITES.forEach((r,i)=>{
   const el=document.createElement('div');el.className='drill rw';
-  el.innerHTML=`<div class="q">${r.task}</div>
+  el.innerHTML=`<div class="q" id="rewrite-task-${i}">${r.task}</div>
   <div class="before"><span class="tag">Weak</span>${r.weak}</div>
-  <textarea placeholder="Type your stronger version here…"></textarea>
+  <textarea aria-labelledby="rewrite-task-${i}" placeholder="Type your stronger version here…"></textarea>
   <div class="row"><button class="btn ghost">Show a strong version</button></div>
   <div class="reveal hidden"><div class="after" style="margin-top:10px"><span class="tag">One strong version</span>${r.strong}</div>
   <div class="fb good show" style="margin-top:8px">Check yours: ${r.check}</div></div>`;
@@ -317,15 +317,24 @@ HARD RULES:
  - Never make me feel dumb. No jargon without a plain-word gloss.
  - Keep replies short. A wall of text is a failed coaching turn.`;
 document.getElementById('sys').textContent=SYS;
-function copySys(){
-  navigator.clipboard.writeText(SYS).then(()=>{
-    const c=document.getElementById('copied');c.style.display='inline';setTimeout(()=>c.style.display='none',1800);
-  }).catch(()=>{
-    const r=document.createRange();r.selectNode(document.getElementById('sys'));
-    window.getSelection().removeAllRanges();window.getSelection().addRange(r);
-    try{document.execCommand('copy');}catch(e){}
-    const c=document.getElementById('copied');c.style.display='inline';setTimeout(()=>c.style.display='none',1800);
-  });
+async function tryCopyText(text,clipboard,fallbackCopy){
+  if(clipboard&&typeof clipboard.writeText==='function'){
+    try{await clipboard.writeText(text);return true;}catch(e){}
+  }
+  try{return Boolean(fallbackCopy());}catch(e){return false;}
+}
+function fallbackCopySys(){
+  const r=document.createRange();r.selectNode(document.getElementById('sys'));
+  const selection=window.getSelection();
+  selection.removeAllRanges();selection.addRange(r);
+  return document.execCommand('copy');
+}
+async function copySys(){
+  const copied=await tryCopyText(SYS,navigator.clipboard,fallbackCopySys);
+  const c=document.getElementById('copied');
+  c.textContent=copied?'Copied ✓':'Copy failed — select the coach text and copy it manually.';
+  c.style.color=copied?'var(--accent2)':'var(--bad)';
+  c.style.display='inline';setTimeout(()=>c.style.display='none',copied?1800:5000);
 }
 go(0,false);
 </script>
