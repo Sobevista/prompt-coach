@@ -15,9 +15,9 @@
 | Ask for a shape | "Give me back: [3 options / a table / steps]." |
 | Set register/depth | "Explain like I'm new — plain English, no jargon." |
 | Un-flatter it | "Poke holes in this. What would make it fail?" |
-| Ask for reasoning | "Walk me through why, so I can check it." |
+| Ask for checkable work | "List the assumptions, criteria and sources, then give me two checks I can do." |
 | Steer, don't restart | "Keep it, but change [one thing]." |
 
 **If you're stuck, it's almost always habit 1: you didn't give it enough about *you*.**
 
-**Turn it into a coach:** copy the coach text from the trainer's last step (or from `Coach_v1_system_prompt.md` if you have the folder), paste it as your first message into any AI, then ask for real help. It'll coach you as you go.
+**Turn it into a coach:** copy the coach text from the trainer's last step (or from `Coach_v1_system_prompt.md` if you have the folder), paste it as your first message into an AI tool approved for your work, then ask for real help. Replace personal data, client-confidential material, credentials and commercially sensitive details with safe placeholders. It'll coach you as you go.

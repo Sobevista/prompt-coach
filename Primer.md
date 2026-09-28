@@ -4,9 +4,9 @@
 
 ## The one idea
 
-AI can't read your mind. Think of it as a sharp new coworker who knows a lot in general but knows **nothing about you, your situation, or what you actually want** until you tell them. "Prompting" is just the skill of telling them well. It is completely learnable, and it isn't a bag of tricks — it's three habits that build on each other.
+AI can't read your mind. Think of it as a sharp new coworker who knows a lot in general but knows **nothing about you, your situation, or what you actually want** until you tell them. "Prompting" is the practical skill of telling them well. You can practise it, and it isn't a bag of tricks — this course organizes it into three habits that build on each other.
 
-The person whose real conversations this was built from started fifteen months ago asking an AI how to open a fresh spreadsheet. Everything here came from watching how the asking changed over thousands of real conversations. Two things changed the most, measurably: the prompts got **longer** (more context handed over) and they started **specifying the form** of the answer wanted. That's not talent. That's reps on habits you're about to learn.
+This course was shaped by one person's progression from simple questions to more structured prompting. In that private corpus, the owner observed more context and more explicit requests for the form of the answer. That is a useful teaching hypothesis, not proof that everyone follows the same path. See `METHOD.md` for the evidence limits.
 
 ## The 3 habits (this is the whole game)
 
@@ -18,7 +18,7 @@ The person whose real conversations this was built from started fifteen months a
 - Weak: "Help me plan an offsite."
 - Strong: "Plan a 1-day offsite for 12 people. Give me back: 3 theme options, a sample schedule, and a rough budget."
 
-**3. Don't trust the first answer.** The first reply is a draft. Make it earn your trust — show its reasoning, argue the other side, or give you options.
+**3. Don't trust the first answer.** The first reply is a draft. Make it earn your trust — ask for its assumptions, criteria, sources, calculations, uncertainty or a verification step; argue the other side; or ask for options.
 - Weak: "Thanks, I'll use that." (said to a generic answer)
 - Strong: "That's too generic. Ask me 3 questions, then give me 3 stronger versions to choose from."
 
@@ -36,7 +36,7 @@ Learn them in order. Habit 1 fixes most bad results on its own.
 
 *Habit 3 — don't trust the first answer:*
 5. **Demand the un-flattering version.** AI leans toward praise. "Poke holes in this — what would make it fail?"
-6. **Ask for the reasoning.** "Recommend a laptop and walk me through why, so I can check your logic."
+6. **Ask for checkable work.** "Recommend a laptop. List your criteria, sources and assumptions, then give me two checks I can do myself."
 7. **Steer, don't restart.** When it's off, fix the one wrong turn and keep the thread. "Keep it all, but friendlier, and cut the last paragraph."
 
 ## Know your default
@@ -50,6 +50,6 @@ Most beginners lean one way. Spotting yours is half the battle:
 
 ## How to actually get good
 
-Reading this makes you aware. **Reps** make you good. Open the trainer (`trainer.html`), do the practice drills, then copy the live coach (`Coach_v1_system_prompt.md`) into whatever AI you use and run it on something real you actually need done. The habits stick when you use them on your own work, not on practice prompts.
+Reading this makes you aware. **Reps** make you good. Open the trainer (`trainer.html`), do the practice drills, then copy the live coach (`Coach_v1_system_prompt.md`) into an AI tool approved for your work. Use a real task, but replace personal data, client-confidential information, credentials and commercially sensitive details with safe placeholders. The habits stick when you use them on your own work, not on practice prompts.
 
 Go slow to go fast.

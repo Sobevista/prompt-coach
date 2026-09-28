@@ -5,7 +5,7 @@
 Prompt Coach / Trainer Console — Cartridge #1 of the console+cartridge teaching engine (the Loop). See `README.md` for the product, `BUILD_OUTLINE.md` for phases and the STATE OF BUILD log.
 
 ## Cold start
-Doc/product repo — no build step, no secrets, no CI by design (nothing mechanical to verify; the trainer is a single offline file).
+Doc/product repo — no build step or dependencies; the trainer is a single offline file. Run `node tests/verify_release.mjs` for the mechanical release checks.
 1. Clone (or read connector-direct — this repo is public).
 2. Open `trainer.html` in any browser — that IS the product running.
 3. Read the LAST entry of STATE OF BUILD in `BUILD_OUTLINE.md` — it ends in the single NEXT ACTION.
@@ -14,4 +14,4 @@ Doc/product repo — no build step, no secrets, no CI by design (nothing mechani
 Judgment content is NEVER patched only in the prompt or trainer.html — fix the Knowledge Base (Layer 1, in the harness), then re-render here (Layer 2). The v1/trainer drift bug made this law.
 
 ## Where things stand
-Phase 5 (cohort zero + v1.1 certification). v1.1's trigger changes are NOT persona re-tested — re-run the blind rig before wide distribution. Chelsie has the test kit pending.
+Phase 5 (cohort zero + current-prompt certification). The v1.2 draft's diagnostic and safety wording changes are NOT persona re-tested — re-run the blind rig before wide distribution, then run the cold beginner test. Chelsie has the earlier test kit pending; update it before use.

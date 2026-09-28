@@ -31,6 +31,9 @@ Four personas spanning DISC quadrants, cross-referenced to Kolbe action modes an
 ## v1.1 (2026-07-10) — NOT YET RE-TESTED
 Fable review changed two triggers: over-trust now fires on the *input's* known gaps (no self-grading of the coach's own output), and overwhelm requires an emotion/inability cue (volume words alone don't fire). Also added graduation. These change diagnostic behavior, so the v1 blind results above do NOT certify v1.1. **Re-run the four-persona blind rig (add a fifth: enthusiastic high-volume Sunny-type saying "so much going on!" who is NOT overwhelmed — tests the false-positive fix) before wide distribution.**
 
+## v1.2 draft (2026-09-27) — NOT YET TESTED
+The review draft replaces requests for hidden reasoning with checkable assumptions, criteria, sources, calculations, uncertainty and verification steps. It also adds a safe-data rule to the coach. These are behavior changes, so neither the v1 results nor an unrun v1.1 plan certify this prompt. Re-run the same five-scenario rig against the exact fenced prompt in `Coach_v1_system_prompt.md`, then conduct the cold beginner test.
+
 ## Still open
-- **Live human test not yet done.** Persona agents are a proxy. The real kill test is a beginner who doesn't think like Daniel (Phase 4).
+- **Live human test not yet done.** Simulated learner agents are a proxy. The real kill test is a beginner who doesn't think like Daniel (Phase 4).
 - Watch Sunny-type users: the context-over-shape priority means "ramblers" get context coaching first and shape on the next turn. Confirm that sequence feels right with a real rambler.

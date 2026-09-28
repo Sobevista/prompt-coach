@@ -13,7 +13,7 @@
 Open `trainer.html`. Click through all 5 steps in order. Actually do the practice: Part 1's pick-the-answer drills AND Part 2's rewrite boxes (type a real attempt before hitting "Show a strong version"). Jot friction as you go — anywhere you re-read something twice, that's a note.
 
 **Part 2 — The live coach (~15 min).**
-On the trainer's last step, hit "Copy the coach." Paste it as the first message into your AI. Then ask for something you ACTUALLY need this week — a message, a plan, a decision. Not a practice prompt, a real one. Go at least 3 back-and-forth turns and let it coach you. Note where the coaching felt right, wrong, or annoying.
+On the trainer's last step, hit "Copy the coach." Paste it as the first message into an approved AI tool. Then ask for something you ACTUALLY need this week — a message, a plan, a decision. Not a practice prompt, a real one. Do not paste personal data, client-confidential information, credentials or commercially sensitive material; replace those details with safe placeholders. Go at least 3 back-and-forth turns and let it coach you. Note where the coaching felt right, wrong, or annoying.
 
 **Part 3 — The log (~5 min).**
 Fill out the Friction_Log — especially the "in your own words" question, done without looking back at the page.
@@ -27,4 +27,4 @@ Fill out the Friction_Log — especially the "in your own words" question, done 
 You walk away able to do one move you couldn't do before, without having been handed the whole list. If that didn't happen, the tool failed — say so plainly.
 
 ## Send back
-The Friction_Log + (if you're willing) a copy or screenshots of your coach conversation.
+The Friction_Log. A copy or screenshots of your coach conversation are optional: redact names, personal data, client-confidential information, credentials and commercially sensitive details first. If redaction is awkward, describe the friction instead of sharing the conversation.

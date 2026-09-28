@@ -2,8 +2,10 @@
 
 *You're testing the tool, the tool is not testing you. There are no wrong answers, and the boring details are the most useful ones. Where you got confused or almost quit is exactly the treasure we're digging for.*
 
-**Name:** _______  **Date:** _______
+**Name or participant code (optional):** _______  **Date:** _______
 **What you used:** ☐ trainer.html  ☐ the paste-in coach  ☐ cheat sheet  ☐ primer
+
+Do not record personal data, client-confidential information, credentials or commercially sensitive details here. Use placeholders and redact screenshots or copied conversation text.
 
 ## While you're using it — jot these as they happen
 
@@ -30,4 +32,4 @@
 - Did you try the paste-in coach on something real? What was it, and did the coaching feel right or annoying?
 - If it coached you on the "wrong" thing — what should it have noticed instead?
 
-*Hand this back however is easiest — photo of paper, text, email. Raw beats tidy.*
+*Hand this back however is easiest — photo of paper, text, email. Redact sensitive details first. Raw beats tidy.*

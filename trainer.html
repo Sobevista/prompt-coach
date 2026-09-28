@@ -57,7 +57,8 @@
   .fb.bad{background:#241a22;border:1px solid #3d2733}
   .rw textarea{width:100%;min-height:84px;background:#0c1018;border:1px solid var(--line);border-radius:10px;
     color:var(--ink);padding:10px 12px;font-family:inherit;font-size:14px;line-height:1.5;resize:vertical;margin-top:10px}
-  .rw textarea:focus{outline:none;border-color:var(--accent)}
+  .rw textarea:focus{border-color:var(--accent)}
+  button:focus-visible,textarea:focus-visible,h2:focus-visible{outline:3px solid var(--warn);outline-offset:3px}
   .score{color:var(--dim);font-size:14px;margin-top:6px}
   .coachbox{position:relative}
   pre.sys{white-space:pre-wrap;background:#0c1018;border:1px solid var(--line);border-radius:12px;
@@ -68,7 +69,11 @@
   .navbtns{display:flex;justify-content:space-between;margin-top:8px}
   .hidden{display:none}
   .callout{border-left:3px solid var(--accent);background:var(--panel2);padding:10px 14px;border-radius:0 10px 10px 0;color:var(--dim);font-size:14px;margin:12px 0}
+  .safe-data{border-left-color:var(--warn)}
   footer{color:var(--dim);font-size:12px;text-align:center;margin-top:30px}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}
+  }
 </style>
 </head>
 <body>
@@ -77,21 +82,21 @@
     <h1>Prompt Coach</h1>
     <p>Learn to talk to AI so it actually helps you. No experience needed.</p>
   </header>
-  <div class="progress"><i id="bar"></i></div>
-  <nav class="steps" id="nav"></nav>
+  <div class="progress" role="progressbar" aria-label="Course progress" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"><i id="bar"></i></div>
+  <nav class="steps" id="nav" aria-label="Course steps"></nav>
 
   <!-- STEP 1 -->
-  <section class="card step" data-step="0">
-    <h2>Start here</h2>
+  <section class="card step" id="step-0" data-step="0">
+    <h2 tabindex="-1">Start here</h2>
     <p class="lead">AI is not magic and it can't read your mind. It's more like a brilliant new coworker who knows a lot but knows <em>nothing about you or your situation</em> until you tell them. Prompting is just the skill of telling them well.</p>
-    <p>Here's the encouraging part: this is <strong>learnable</strong>, and it's not tricks. People who got good at it all climbed the same short ladder — three habits that build on each other. That's the whole game, and you'll have all three by the end of this page.</p>
-    <div class="callout">The person whose real conversations this is built from started 15 months ago asking an AI "how do I open a fresh spreadsheet." The distance from there to here is just reps on three habits. You can walk the same path.</div>
+    <p>Here's the encouraging part: this is a <strong>practical skill you can practise</strong>, and it's not tricks. This course organizes it into three habits that build on each other. You'll have tried all three by the end of this page.</p>
+    <div class="callout">This course was shaped by one person's progression from simple questions to more structured prompting. Treat the three habits as a practical teaching model to test on your work, not proof that everyone follows the same path.</div>
     <div class="navbtns"><span></span><button class="btn" onclick="go(1)">The 3 habits →</button></div>
   </section>
 
   <!-- STEP 2 -->
-  <section class="card step hidden" data-step="1">
-    <h2>The 3 habits (the whole game)</h2>
+  <section class="card step hidden" id="step-1" data-step="1">
+    <h2 tabindex="-1">The 3 habits (the whole game)</h2>
     <p class="lead">Everything else is a version of one of these. Learn them in order.</p>
     <div class="habit"><div class="num">1</div><div>
       <h3 style="margin-top:0">Give the givens</h3>
@@ -111,7 +116,7 @@
     </div></div>
     <div class="habit"><div class="num">3</div><div>
       <h3 style="margin-top:0">Don't trust the first answer</h3>
-      <p>The first reply is a draft, not gospel. Make it show its reasoning, argue the other side, or hand you options to choose from.</p>
+      <p>The first reply is a draft, not gospel. Ask for checkable assumptions, criteria, sources, calculations, uncertainty or a verification step; argue the other side; or ask for options.</p>
       <div class="ba">
         <div class="before"><span class="tag">Weak</span>Thanks, I'll use that. <span style="color:var(--dim)">(to a generic answer)</span></div>
         <div class="after"><span class="tag">Strong</span>That's too generic. Ask me 3 questions, then give me 3 stronger versions to choose from.</div>
@@ -121,19 +126,19 @@
   </section>
 
   <!-- STEP 3 -->
-  <section class="card step hidden" data-step="2">
-    <h2>The 7 moves</h2>
+  <section class="card step hidden" id="step-2" data-step="2">
+    <h2 tabindex="-1">The 7 moves</h2>
     <p class="lead">These are the three habits, broken into specific things you can actually type. You don't need all seven at once — reach for whichever fits.</p>
     <div id="moves"></div>
     <div class="navbtns"><button class="btn ghost" onclick="go(1)">← Back</button><button class="btn" onclick="go(3)">Practice →</button></div>
   </section>
 
   <!-- STEP 4 -->
-  <section class="card step hidden" data-step="3">
-    <h2>Practice</h2>
+  <section class="card step hidden" id="step-3" data-step="3">
+    <h2 tabindex="-1">Practice</h2>
     <p class="lead"><strong>Part 1 — Spot it.</strong> Read each situation and pick what the prompt needs <em>most</em>. You'll get instant feedback. There's often a defensible second choice — we're after the strongest one.</p>
     <div id="drills"></div>
-    <div class="score" id="score"></div>
+    <div class="score" id="score" aria-live="polite"></div>
     <h3 style="margin-top:26px">Part 2 — Write it</h3>
     <p class="lead" style="margin-top:0">Spotting the fix is half the skill; typing it is the other half. Rewrite each weak prompt yourself, then reveal a strong version and compare. There's no single right answer — check yours against the checklist.</p>
     <div id="rewrites"></div>
@@ -141,14 +146,15 @@
   </section>
 
   <!-- STEP 5 -->
-  <section class="card step hidden" data-step="4">
-    <h2>Your live coach (works in any AI)</h2>
-    <p class="lead">Reading is one thing; reps are another. Copy the text below and paste it as the <strong>first message</strong> into any AI chat — ChatGPT, Claude, Gemini, Copilot. It turns that AI into a coach that watches how you ask and levels you up one step at a time.</p>
+  <section class="card step hidden" id="step-4" data-step="4">
+    <h2 tabindex="-1">Your live coach (works in any AI)</h2>
+    <p class="lead">Reading is one thing; reps are another. Copy the text below and paste it as the <strong>first message</strong> into an AI chat approved for that work — ChatGPT, Claude, Gemini or Copilot. It turns that AI into a coach that watches how you ask and levels you up one step at a time.</p>
+    <div class="callout safe-data" role="note"><strong style="color:var(--ink)">Keep real work safe:</strong> use an AI tool approved for that work. Replace personal data, client-confidential information, credentials and commercially sensitive details with safe placeholders.</div>
     <div class="coachbox">
       <pre class="sys" id="sys"></pre>
       <div class="row">
         <button class="btn" onclick="copySys()">Copy the coach</button>
-        <span id="copied" style="color:var(--accent2);font-size:13px;display:none">Copied ✓</span>
+        <span id="copied" role="status" aria-live="polite" style="color:var(--accent2);font-size:13px;display:none">Copied ✓</span>
       </div>
     </div>
     <div class="callout"><strong style="color:var(--ink)">Your first rep, right now:</strong> pick one thing you actually need this week — a message, a plan, a decision. Paste the coach, then ask for that thing using habit 1 (your real givens) and habit 2 (the shape you want back). Nothing else. That one rep on real work is worth more than re-reading this page.</div>
@@ -163,18 +169,27 @@
     <div class="navbtns"><button class="btn ghost" onclick="go(3)">← Back</button><button class="btn" onclick="go(0)">Start over</button></div>
   </section>
 
-  <footer>Prompt Coach · a learning tool · built from 15 months of real AI conversations</footer>
+  <footer>Prompt Coach · a draft learning tool · shaped by one practitioner's experience</footer>
 </div>
 
 <script>
 const STEPS=["Start","3 Habits","7 Moves","Practice","Live Coach"];
 const nav=document.getElementById('nav');
-STEPS.forEach((s,i)=>{const b=document.createElement('button');b.textContent=(i+1)+". "+s;b.onclick=()=>go(i);nav.appendChild(b);});
-function go(n){
-  document.querySelectorAll('.step').forEach(el=>el.classList.toggle('hidden',+el.dataset.step!==n));
-  [...nav.children].forEach((b,i)=>b.classList.toggle('active',i===n));
+STEPS.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.textContent=(i+1)+". "+s;b.setAttribute('aria-controls','step-'+i);b.onclick=()=>go(i);nav.appendChild(b);});
+function go(n,focusHeading=true){
+  const sections=[...document.querySelectorAll('.step')];
+  sections.forEach(el=>el.classList.toggle('hidden',+el.dataset.step!==n));
+  [...nav.children].forEach((b,i)=>{
+    const active=i===n;
+    b.classList.toggle('active',active);
+    if(active)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');
+  });
+  const progress=document.querySelector('.progress');
+  progress.setAttribute('aria-valuenow',String(n+1));
   document.getElementById('bar').style.width=((n+1)/STEPS.length*100)+"%";
-  window.scrollTo({top:0,behavior:'smooth'});
+  const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});
+  if(focusHeading)sections[n].querySelector('h2').focus();
 }
 
 const MOVES=[
@@ -188,8 +203,8 @@ const MOVES=[
    "Explain APIs.","Explain APIs like I'm totally new — plain English, one everyday analogy, no jargon."],
   ["Demand the un-flattering version","Habit 3","AI defaults to agreement and praise. Explicitly forbid it.",
    "Is this plan good?","Poke holes in this plan. What would make it fail, and what am I not seeing?"],
-  ["Ask for the reasoning","Habit 3","Make the logic visible so you can catch where it's wrong.",
-   "Which laptop should I buy?","Recommend a laptop and walk me through why, so I can check your logic against my needs."],
+  ["Ask for checkable work","Habit 3","Make the assumptions and evidence inspectable so you can test the answer.",
+   "Which laptop should I buy?","Recommend a laptop. List your criteria, sources and assumptions, then give me two checks I can do myself."],
   ["Steer, don't restart","Habit 3","When it's off, correct the one wrong turn and keep the thread — don't wipe and re-ask.",
    "(start a whole new chat)","No — keep everything, but make the tone friendlier and cut the last paragraph."]
 ];
@@ -205,7 +220,7 @@ MOVES.forEach((m,i)=>{
 
 const DRILLS=[
   {q:'"write me a resume."',ctx:"Someone types this and hits enter.",
-   opts:["Give the givens (their real experience)","Ask for a shape","Don't trust the first answer","Ask for the reasoning"],
+   opts:["Give the givens (their real experience)","Ask for a shape","Don't trust the first answer","Ask for checkable work"],
    correct:0,fb:"The AI knows nothing about this person's jobs, skills, or target role — it can only invent a hollow template. It needs the givens first."},
   {q:'"I need to write a whole marketing plan and I don\'t even know where to start, it\'s a lot."',ctx:"A beginner, clearly overwhelmed.",
    opts:["Give the givens","Chunk it to step one","Ask for a shape","Set the register"],
@@ -214,7 +229,7 @@ const DRILLS=[
    opts:["Give the givens","Ask for a shape","Don't trust the first answer","Chunk it"],
    correct:2,fb:"Classic over-trust. The move: 'That's too generic — ask me a few questions, then give me 3 versions to choose from.' Getting to choose beats accepting whatever came out."},
   {q:'"Hi!! So our team just had the wildest quarter and everyone\'s exhausted and I love these people and I want to do something fun... anyway can you help me??"',ctx:"Warm, lots of story, but what do they actually want back?",
-   opts:["Don't trust the first answer","Ask for a shape (what to hand back)","Ask for the reasoning","Chunk it"],
+   opts:["Don't trust the first answer","Ask for a shape (what to hand back)","Ask for checkable work","Chunk it"],
    correct:1,fb:"There's plenty of warmth but no defined ask. Name the deliverable: 'Give me back 3 offsite ideas, each with a schedule and rough cost.' Shape turns rambling into a plan."},
   {q:'"Is my essay good?"',ctx:"They want real feedback, not a pat on the head.",
    opts:["Demand the un-flattering version","Give the givens","Chunk it","Set the register"],
@@ -224,7 +239,7 @@ let answered=0,right=0;
 const dc=document.getElementById('drills');
 DRILLS.forEach((d,i)=>{
   const el=document.createElement('div');el.className='drill';
-  el.innerHTML=`<div class="q">${d.q}</div><div class="ctx">${d.ctx}</div><div class="opts"></div><div class="fb" id="fb${i}"></div>`;
+  el.innerHTML=`<div class="q">${d.q}</div><div class="ctx">${d.ctx}</div><div class="opts"></div><div class="fb" id="fb${i}" role="status" aria-live="polite"></div>`;
   const o=el.querySelector('.opts');
   d.opts.forEach((t,j)=>{
     const b=document.createElement('button');b.textContent=t;
@@ -268,7 +283,7 @@ const SYS=`You are Prompt Coach. Your job is to make me a better prompter — no
 WHAT GOOD PROMPTING IS (everything ladders up to these 3 habits):
  1. Give the givens (my real situation, facts, constraints).
  2. Ask for a specific shape of answer (steps? a table? one yes/no? 3 options?).
- 3. Don't trust the first answer (make it show its work, argue the other side, or give me options).
+ 3. Don't trust the first answer (ask for checkable assumptions, criteria, sources, calculations, uncertainty or verification steps; argue the other side; or ask for options).
 
 EACH TURN, read two things: (A) what I asked and how, and (B) how I reacted to your last answer (turn 2+). Reactions are where the deepest habits hide. Then pick the SINGLE weakest link, in this priority order (top wins):
 
@@ -284,8 +299,8 @@ EACH TURN, read two things: (A) what I asked and how, and (B) how I reacted to y
  4. NO SHAPE — I didn't say what form I want back.
     -> Tell me to ask for a shape; add a "give me back: ..." line.
 
- 5. NO REASONING — I want an answer with no way to check it.
-    -> Tell me to ask for your reasoning so I can check the logic.
+ 5. NO CHECKING — I want an answer with no way to inspect or verify it.
+    -> Tell me to ask for the assumptions, criteria, sources, calculations, uncertainty and one or two checks I can do myself. A fluent explanation is not proof.
 
 HOW YOU REPLY EVERY TURN:
  - Fix ONLY that one link. One move per turn — never dump the whole list.
@@ -298,6 +313,7 @@ GRADUATION:
 
 HARD RULES:
  - If I just want the answer and not coaching, give it — then offer one small tip on how I could have asked better.
+ - Never ask me to share personal data, client-confidential information, credentials or commercially sensitive details. If I include them, do not repeat them; suggest safe placeholders and an approved AI tool.
  - Never make me feel dumb. No jargon without a plain-word gloss.
  - Keep replies short. A wall of text is a failed coaching turn.`;
 document.getElementById('sys').textContent=SYS;
@@ -311,7 +327,7 @@ function copySys(){
     const c=document.getElementById('copied');c.style.display='inline';setTimeout(()=>c.style.display='none',1800);
   });
 }
-go(0);
+go(0,false);
 </script>
 </body>
 </html>
